@@ -28,15 +28,16 @@ package distnews;
  * TODO Security verbessern
  * TODO Serverseitiges Select mittels XSLT
  * TODO Message Format Definition
+ * TODO selfconnects verhindern
+ * TODO eigene IP erkennen	
+ * TODO xml check mit nachricht fuer korrekte eingabe
+ * 
  * 
  * TODO Funktion um distnews regul?r (mit speichern zu beenden)
  * TODO Funktion um messages aus letztem lauf wieder zu laden
  * 
- * XXX Configurations script (done)
- * XXX xml configuration (done)
- * 
- * FIXME do not store internal network ips on internet units
- * FIXME messages are changed when inserted due to differences in layout (blanks)
+ * FIXME do not store internal network ips on internet units (done)
+ * FIXME messages are changed when inserted due to differences in layout (blanks/ <a></a> -> <a />)
  * 
  */ 
 
