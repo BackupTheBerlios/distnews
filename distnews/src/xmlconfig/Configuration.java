@@ -47,9 +47,9 @@ public class Configuration {
         this.cfglist.add(new Cfg("server_maxclients","10"));
         this.cfglist.add(new Cfg("gui_maxclients","4"));
         this.cfglist.add(new Cfg("client_sleeptime","5000"));
-        //this.cfglist.add(new Cfg("",""));
-        //this.cfglist.add(new Cfg("",""));
-        //this.cfglist.add(new Cfg("",""));
+        this.cfglist.add(new Cfg("iplist_maxsize","250"));
+        this.cfglist.add(new Cfg("iplist_daemontype","extern"));
+        this.cfglist.add(new Cfg("msglist_maxsize","2000"));
         //this.cfglist.add(new Cfg("",""));
         //this.cfglist.add(new Cfg("",""));
         //this.cfglist.add(new Cfg("",""));
@@ -62,6 +62,7 @@ public class Configuration {
      */
     public void addValue(String n, String v) {
         this.changeValue(n,v);
+        System.out.println(n + "\t\t" + v);
     }
     
     /**
@@ -73,7 +74,7 @@ public class Configuration {
         for (int i = 0; i < this.cfglist.size(); i++) {
             if (((Cfg) this.cfglist.get(i)).name.equals(n)) return ((Cfg) this.cfglist.get(i)).value;
         }
-        return null;
+        return "";
     }
     
     /**

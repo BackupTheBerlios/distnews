@@ -39,6 +39,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import xmlconfig.Configuration;
+
 /**
  * @author popel
  *
@@ -51,9 +53,9 @@ public class XMLMessageParser {
  *  Constructor
  * @param	a	message to be parsed
  */
-    public XMLMessageParser(String a) {
-        xmlsource = a.replaceAll("\n","");;
-        ml = new MsgList(0, null);
+    public XMLMessageParser(String a, Configuration c) {
+        this.xmlsource	= a.replaceAll("\n","");;
+        this.ml		= new MsgList(0, c);
     }
     
 /**
@@ -61,7 +63,7 @@ public class XMLMessageParser {
  * @return		MsgList created out of the Input String
  * @throws		Exception
  */
-    public MsgList returnMsgList() throws Exception {
+    public MsgList returnMsgList() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setValidating(false);
@@ -71,6 +73,7 @@ public class XMLMessageParser {
             ArrayList al = new ArrayList(3);
             Node node = (Node) doc;
             
+            System.out.println("XMLMESSAGEPARESER: GOT MESSAGE");
             for (Node c = node.getFirstChild().getFirstChild();c != null; c = c.getNextSibling()) {
                 
                 MessageContainer mc = new MessageContainer();
@@ -84,6 +87,9 @@ public class XMLMessageParser {
             	    }
             	    mc.setMessage(a);
             	}
+                else {
+                    System.out.println("XMLMESSAGEPARSER: NodeTypeError");
+                }
                 
                 if (c.getAttributes().getNamedItem("hash").getNodeValue().equals(mc.getHash())) {
                     ml.msgAdd(mc);

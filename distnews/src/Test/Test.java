@@ -25,8 +25,8 @@
  */
 package Test;
 
-import xmlconfig.ConfigReader;
-import xmlconfig.Configuration;
+import xmlconfig.*;
+import distnews.message.*;
 
 /**
  * @author popel
@@ -36,7 +36,10 @@ public class Test {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Just for development test!");
-        Configuration cfg = new Configuration();
-        ConfigReader cr = new ConfigReader("config.xml", cfg);
+        String a = "<?xml version='1.0' encoding='UTF-8'?><messagelist date=\"1104340989698\"><message count=\"0\" hash=\"7C03AEB8031097D35CAF3416A1826139\">asdfsd</message></messagelist>";
+        System.out.println(a);
+        System.out.println();
+        
+        System.out.println((new XMLMessageParser(a, (new ConfigReader("config.xml",new Configuration())).getConfig())).returnMsgList().toString());
     }
 }

@@ -67,12 +67,16 @@ public class ConfigReader {
 	    NodeList nl = n.getChildNodes();
 	    for (int i = 0; i < nl.getLength(); i++) {
 	        if(nl.item(i).getNodeName().equals("entry")) {
-	            System.out.println(nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + "\t" + nl.item(i).getAttributes().getNamedItem("value").getNodeValue());
+	            //System.out.println(nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + "\t" + nl.item(i).getAttributes().getNamedItem("value").getNodeValue());
 	            cfg.addValue(nl.item(i).getAttributes().getNamedItem("name").getNodeValue(), nl.item(i).getAttributes().getNamedItem("value").getNodeValue());
 	        }
 	        if(nl.item(i).hasAttributes() || nl.item(i).hasChildNodes()) {
 		        recursiveTest(nl.item(i));
 	        }
 	    }
+	}
+	
+	public Configuration getConfig() {
+	    return cfg;
 	}
 }

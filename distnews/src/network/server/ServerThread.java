@@ -27,6 +27,8 @@ package network.server;
 import java.io.*;
 import java.net.*;
 
+import xmlconfig.Configuration;
+
 import distnews.message.MsgList;
 import distnews.message.XMLMessageParser;
 
@@ -38,16 +40,18 @@ import network.iplist.*;
  */
 
 public class ServerThread extends Thread {
-    Socket sverb;
-    Monitor monitor;
-    IpList ipl;
-    MsgList ml;
+    private Socket sverb;
+    private Monitor monitor;
+    private IpList ipl;
+    private MsgList ml;
+    private Configuration conf;
     
-    ServerThread(Socket s, Monitor mo, IpList i, MsgList m) {
+    ServerThread(Socket s, Monitor mo, IpList i, MsgList m, Configuration c) {
         this.sverb	= s;
         this.monitor	= mo;
         this.ipl	= i;
         this.ml		= m;
+        this.conf	= c;
     }
     
 /**
@@ -112,7 +116,7 @@ public class ServerThread extends Thread {
                     while (!(str = in.readLine()).trim().equals("###")) {
                         if (!str.trim().equals("")) a = a + str.trim();
                     }
-                    ml.addMsgList(new XMLMessageParser(a).returnMsgList());
+                    ml.addMsgList((new XMLMessageParser(a, conf)).returnMsgList());
                 }
                 else if (str.trim().equals("get iplist")) {
                     String stra;
@@ -126,7 +130,7 @@ public class ServerThread extends Thread {
                     while (!(str = in.readLine()).trim().equals("###")) {
                         if (!str.trim().equals("")) a = a + str.trim();
                     }
-                    ml.addMsgList(new XMLMessageParser(a).returnMsgList());
+                    ml.addMsgList((new XMLMessageParser(a, conf)).returnMsgList());
 
                 }
                 else if (str.trim().equals("info")) {

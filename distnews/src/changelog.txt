@@ -2,6 +2,7 @@
 date: 29.12.2004
  * introduction of new xml configuration system
  * fixed hash related problems with message exchange
+ * introduced new message preparation function
 
 0.2.1
 date: 20.12.2004

@@ -31,6 +31,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 
+import xmlconfig.Configuration;
+
 import distnews.message.MsgList;
 import distnews.message.XMLMessageParser;
 
@@ -44,15 +46,17 @@ import network.iplist.MySocket;
 public class Client {
     private IpList ipl;
     private MsgList ml;
+    private Configuration conf;
 
 /**
  * Constructor 
  * @param i	reference on the used IpList
  * @param m reference on the used MsgList
  */
-    public Client (IpList i, MsgList m) {
+    public Client (IpList i, MsgList m, Configuration c) {
         this.ipl	= i;
         this.ml		= m;
+        this.conf	= c;
     };
     
 /**
@@ -63,13 +67,8 @@ public class Client {
  */
 	public void run(String ip, int port) {
         try {
-            /*
-             * Socket s = new Socket (ip, port);
-             * s.setSoTimeout(1000);
-             */
-            
+            System.out.println("CLIENT: Connecting to: " +ip);
             Socket s = new Socket();
-            //s.setSoTimeout(1000);
             s.connect(new InetSocketAddress(ip,port), 1000);
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             PrintStream out = new PrintStream(s.getOutputStream());
@@ -116,7 +115,7 @@ public class Client {
                     if (!str.trim().equals("")) a = a + str.trim();
                 }
                 try {
-                    ml.addMsgList(new XMLMessageParser(a).returnMsgList());
+                    ml.addMsgList((new XMLMessageParser(a, conf)).returnMsgList());
                 } catch (Exception e) {
                     System.out.println("XML PARSER ERROR: " + e);
                 }

@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+import xmlconfig.Configuration;
+
 import distnews.message.MsgList;
 import distnews.message.XMLMessageParser;
 
@@ -40,16 +42,18 @@ import network.iplist.MySocket;
  *
  */
 public class GUIServerThread extends Thread {
-    Socket sverb;
-    Monitor monitor;
-    IpList ipl;
-    MsgList ml;
+    private Socket sverb;
+    private Monitor monitor;
+    private IpList ipl;
+    private MsgList ml;
+    private Configuration conf;
     
-    GUIServerThread(Socket s, Monitor mo, IpList i, MsgList m) {
+    GUIServerThread(Socket s, Monitor mo, IpList i, MsgList m, Configuration c) {
         this.sverb	= s;
         this.monitor	= mo;
         this.ipl		= i;
         this.ml		= m;
+        this.conf	= c;
     }
     
     public void run() {
@@ -113,7 +117,7 @@ public class GUIServerThread extends Thread {
                     while (!(str = in.readLine()).trim().equals("###")) {
                         a = a.concat(str.trim() + "\n");
                     }
-                    XMLMessageParser xmp = new XMLMessageParser(a.trim());
+                    XMLMessageParser xmp = new XMLMessageParser(a.trim(), conf);
                     ml.addMsgList(xmp.returnMsgList());
                     out.println("END");
                     out.print("// ");

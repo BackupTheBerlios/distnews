@@ -32,9 +32,9 @@ import distnews.message.filter.WordFilter;
  */
 
 public class MsgFilter {
-	String [] actions;
-	MessageContainer mc;
-	int limes;
+	private String [] filters;
+	private MessageContainer mc;
+	private int limes;
 	
 /**
  * 
@@ -44,7 +44,7 @@ public class MsgFilter {
  * 
  */
 	public MsgFilter (String a, MessageContainer m, int l) {
-		this.actions	= a.split(",");
+		this.filters = a.split(",");
 		this.mc		= m;
 		this.limes	= l;
 	}
@@ -55,14 +55,18 @@ public class MsgFilter {
  */
 	public boolean filter () {
 		int ret = 0;
-		for (int i = 0; i< actions.length; i++) {
-			if (actions[i].equalsIgnoreCase("wordfilter")) {
+		if (this.filters.length == 0) return false;
+		for (int i = 0; ((i< filters.length) && (ret < this.limes)); i++) {
+			if (filters[i].equalsIgnoreCase("wordfilter")) {
 				ret += (new WordFilter()).filter(mc);
+			}
+			else {
+			    System.out.println("FILTER: \tfilter not found");
 			}
 		}
 		/*
 		 * TODO	Build MessageFilter caller that looks for message filters 
-		 * 		in a directory and uses all found
+		 * 		in a directory and uses all found ???
 		 */
 		return (ret > this.limes);
 	}

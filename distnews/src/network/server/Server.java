@@ -57,7 +57,7 @@ public class Server extends Thread {
                 if (monitor.isFree()) {
                     System.out.println("SERVER \tclient connection from: " + sverb.getInetAddress().toString().substring(1));
                     ipl.addSocket(new MySocket(sverb.getInetAddress().toString().substring(1), 7788));
-                    new ServerThread(sverb, monitor, ipl, ml).start();
+                    new ServerThread(sverb, monitor, ipl, ml, conf).start();
                 } else {
                     ipl.addSocket(new MySocket(sverb.getInetAddress().toString().substring(1), 7788));
                     System.out.println("SERVER \tclient connection refused from: " + sverb.getInetAddress().toString().substring(1));

@@ -56,7 +56,7 @@ public class GUIServer extends Thread {
                 Socket sverb = ss.accept();
                 if (monitor.isFree()) {
                     //System.out.println("New GUI connection: " + sverb.getInetAddress().toString().substring(1));
-                    new GUIServerThread(sverb, monitor, ipl, ml).start();
+                    new GUIServerThread(sverb, monitor, ipl, ml, conf).start();
                 } else {
                     //System.out.println("New GUI connection refused: " + sverb.getInetAddress().toString().substring(1));
                     sverb.close();

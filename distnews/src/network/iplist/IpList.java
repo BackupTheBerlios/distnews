@@ -37,12 +37,13 @@ public class IpList {
     public int pos = 0;
     private int size = 0;
     private int maxsockets;
+    private Configuration conf;
     
     
     public IpList(int si, Configuration c) {
-        this.maxsockets = Integer.valueOf(c.getValue("maxsockets")).intValue();
+        this.conf	= c;
+        this.ipl	= new ArrayList(si);
         
-        this.ipl = new ArrayList(si);
         ipl.add(new MySocket());
     }
     
@@ -62,14 +63,22 @@ public class IpList {
         if	(ms.ip.matches("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}") &&
                 (!ms.ip.matches("127.0.*")) && 
                 (!contains(ms))) {
-            ipl.add(ms);
-            this.controllSize();
+            if (this.conf.getValue("iplist_daemontype").equals("extern")) { 
+                if (!ms.ip.matches("192.168.*")) {
+                    ipl.add(ms);
+                    this.controllSize();
+                }
+            }
+            else {
+                ipl.add(ms); 
+                this.controllSize();
+            }
         }
     }
     
     
     private void controllSize() {
-        if(this.ipl.size() > this.maxsockets) {
+        if(this.ipl.size() > this.conf.getIntValue("iplist_maxsize")) {
             for(int i = 1; i < 50; i++) {
                 this.ipl.remove(i);
             }

@@ -33,9 +33,9 @@ import network.iplist.IpList;
  *
  */
 public class ClientInitiator extends Thread {
-    IpList ipl;
-    MsgList ml;
-    Configuration conf;
+    private IpList ipl;
+    private MsgList ml;
+    private Configuration conf;
     
     public ClientInitiator (IpList i, MsgList m, Configuration c) {
         this.ipl	= i;
@@ -49,7 +49,7 @@ public class ClientInitiator extends Thread {
             if (!ip.equals("")) {
                 //System.out.println("CLIENT connecting to " + ip);
                 try {
-                    new Client(ipl, ml).run(ip, port);            
+                    new Client(ipl, ml, conf).run(ip, port);            
                 } catch(Exception e) {
 	                System.out.println("ClientInitiator: " + e);
 	            }

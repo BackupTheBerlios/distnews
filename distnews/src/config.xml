@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<config>
+	<entry name="server_port" value="7788" />
+	<entry name="gui_port" value="7799" />
+	<entry name="server_maxclients" value="10" />
+	<entry name="gui_maxclients" value="4" />
+	<entry name="client_sleeptime" value="5000" />
+	<entry name="iplist_maxsize" value="250" />
+	<entry name="iplist_daemontype" value="extern" />
+	<entry name="msglist_maxsize" value="2000" />
+	<entry name="filter" value="wordfilter" />
+	<entry name="" value="" />
+</config>

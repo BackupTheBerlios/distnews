@@ -42,8 +42,9 @@ import xmlconfig.Configuration;
  */
 
 public class MsgList {
-    ArrayList	msglist;
-    HashList	hashtable;
+    private ArrayList	msglist;
+    private HashList	hashtable;
+    private Configuration conf;
     
 /**
  * Constructor: MsgList
@@ -52,7 +53,8 @@ public class MsgList {
  * 
  */
     public MsgList (int size, Configuration c) {
-        msglist = new ArrayList(size);
+        this.conf	= c;
+        msglist		= new ArrayList(size);
         this.hashtable = new HashList();
     }
     
@@ -74,12 +76,31 @@ public class MsgList {
  * 
  */
     public void msgAdd(String message) {
-        message = message.replaceAll("\n","");
+        message = this.msgPrepare(message);
         MessageContainer mc = new MessageContainer(message);
         if (!this.checkExist(mc) && !this.msgFilter(mc) && (message.length() < 12000)) {
             this.msglist.add(mc);
             this.hashtable.addHash(mc.getHash());
         }
+        else {
+            System.out.println("IPLIST:\tmessage refused");
+        }
+    }
+
+/**
+ * removes xml uninteresting charecters 
+ * @param m message
+ * @return good message
+ */    
+    private String msgPrepare(String m) {
+        m = m.replaceAll("\n"," ");
+        m = m.replaceAll("\t"," ");
+        m = m.replaceAll("\r"," ");
+        m = m.replaceAll("\f"," ");
+        while (m.matches(".*  .*")) {
+            m = m.replaceAll("  "," ");
+        }
+        return m;
     }
     
 /**
@@ -87,7 +108,7 @@ public class MsgList {
  * @param	mc	MessageContainer that represents the message that should be added
  */
     public void msgAdd(MessageContainer mc) {
-        if (!this.checkExist(mc) && !this.msgFilter(mc) && (mc.getMessage().length() < 12000)) {
+        if (!this.checkExist(mc) && !this.msgFilter(mc) && (mc.getMessage().length() < 3000)) {
             this.msglist.add(mc);
             this.hashtable.addHash(mc.getHash());
         }
@@ -202,7 +223,7 @@ public class MsgList {
  *
  */
     private void checkSize () {
-        if (msglist.size() > 2000) {
+        if (msglist.size() > this.conf.getIntValue("msglist_maxsize")) {
             for(int i = 0; i < 100; i++) {
                 msglist.remove(0);
             }
@@ -216,7 +237,7 @@ public class MsgList {
  * 
  */
     private boolean msgFilter (MessageContainer mc) {
-    		return new MsgFilter("wordfilter", mc, 10).filter();
+        return new MsgFilter(this.conf.getValue("filters"), mc, 10).filter();
     }
     
 /**
