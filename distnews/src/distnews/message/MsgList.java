@@ -155,8 +155,8 @@ public class MsgList {
     
 /**
  * Returns a xml message list with messages named in hashlist string
- * @param hashlist
- * @return
+ * @param hl
+ * @return	xml message string containig a message list
  */
     public String toString(String hl) {
         int is = 0;
