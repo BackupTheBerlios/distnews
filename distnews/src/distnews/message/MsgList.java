@@ -83,7 +83,7 @@ public class MsgList {
             this.hashtable.addHash(mc.getHash());
         }
         else {
-            System.out.println("IPLIST:\tmessage refused");
+            System.out.println("MSGLIST:\tmessage refused");
         }
     }
 

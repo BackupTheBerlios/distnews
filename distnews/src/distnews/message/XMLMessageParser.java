@@ -58,9 +58,9 @@ public class XMLMessageParser {
         }
         
         
-        this.xmlsource = a.replaceFirst(">", ">\n");
+        this.xmlsource = a;
         
-        System.out.println(a);
+        // System.out.println(a);
         
         this.ml		= new MsgList(0, c);
     }
@@ -75,14 +75,14 @@ public class XMLMessageParser {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setValidating(false);
             DocumentBuilder db  = dbf.newDocumentBuilder();
-            System.out.println("123");
+            //System.out.println("123");
             Document doc = db.parse(new InputSource(new StringReader(xmlsource)));
             
             
             ArrayList al = new ArrayList(3);
             Node node = (Node) doc;
             
-            System.out.println("XMLMESSAGEPARESER: GOT MESSAGE");
+            //System.out.println("XMLMESSAGEPARESER: GOT MESSAGE");
             for (Node c = node.getFirstChild().getFirstChild();c != null; c = c.getNextSibling()) {
                 
                 MessageContainer mc = new MessageContainer();
@@ -104,7 +104,7 @@ public class XMLMessageParser {
             }
             return ml;
         } catch (Exception e) {
-            System.out.println("XMLMESSAGEPARSER: " +e);
+            System.out.println("XMLMESSAGEPARSER: " + e);
         }
         System.out.println("XMLMESSAGPARSER: lost messages");
         return null;
