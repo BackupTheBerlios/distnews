@@ -24,15 +24,20 @@
  */
 package distnews.message;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author popel
@@ -57,30 +62,50 @@ public class XMLMessageParser {
  * @throws		Exception
  */
     public MsgList returnMsgList() throws Exception {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db  = dbf.newDocumentBuilder();
-		Document doc = db.parse(new InputSource(new StringReader(xmlsource)));
-		
-		ArrayList al = new ArrayList(3);
-		Node node = (Node) doc;
-		
-		for (Node c = node.getFirstChild().getFirstChild();c != null; c = c.getNextSibling()) {
-		    
-		    MessageContainer mc = new MessageContainer();
-		    String a = "";
-		    if(c.getFirstChild().getNodeType() == 3) {
-		        mc.setMessage(c.getFirstChild().getNodeValue());
-			}
-		    else if (c.getFirstChild().getNodeType() == 1){
-			    for (Node n = c.getFirstChild(); n != null; n = n.getNextSibling()) {
-			        a = a + n.toString();
-			    }
-			    mc.setMessage(a);
-			}
-		    if (c.getAttributes().getNamedItem("hash").getNodeValue().equals(mc.getHash())) {
-		        ml.msgAdd(mc);
-		    }
-		}
-        return ml;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setValidating(false);
+            DocumentBuilder db  = dbf.newDocumentBuilder();
+            Document doc = db.parse(new InputSource(new StringReader(xmlsource)));
+            
+            ArrayList al = new ArrayList(3);
+            Node node = (Node) doc;
+            
+            for (Node c = node.getFirstChild().getFirstChild();c != null; c = c.getNextSibling()) {
+                
+                MessageContainer mc = new MessageContainer();
+                String a = "";
+                if(c.getFirstChild().getNodeType() == 3) {
+                    mc.setMessage(c.getFirstChild().getNodeValue());
+            	}
+                else if (c.getFirstChild().getNodeType() == 1){
+            	    for (Node n = c.getFirstChild(); n != null; n = n.getNextSibling()) {
+            	        a = a + n.toString();
+            	    }
+            	    mc.setMessage(a);
+            	}
+                
+                if (c.getAttributes().getNamedItem("hash").getNodeValue().equals(mc.getHash())) {
+                    ml.msgAdd(mc);
+                } else System.out.println("message not consistant : new -> " + c.getAttributes().getNamedItem("hash").getNodeValue() + "  -  old -> " + mc.getHash() + " "+ mc.getMessage());
+            }
+            return ml;
+        } catch (DOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (FactoryConfigurationError e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }

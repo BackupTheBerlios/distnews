@@ -25,7 +25,8 @@
 package distnews;
 
 /*
- * TODO Message Bestandsabgleich vor ?bertragung
+ * TODO Security verbessern
+ * TODO Message Bestandsabgleich vor ?bertragung (partialy done)
  * TODO Serverseitiges Select mittels XSLT
  * TODO Message Format Definition
  * 

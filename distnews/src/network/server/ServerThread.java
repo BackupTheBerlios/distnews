@@ -50,6 +50,9 @@ public class ServerThread extends Thread {
         this.ml		= m;
     }
     
+/**
+ * Manages the server session
+ */
     public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(sverb.getInputStream()));
@@ -65,7 +68,7 @@ public class ServerThread extends Thread {
             while (((str = in.readLine()) != null) && go) {
                 if (str.trim().equals("exit")) go = false;
                 else if (str.trim().equals("send iplist")) {
-                    out.println(ipl.toString());
+                    out.println(ipl.toStringRand());
                     out.println("###");
                 }
                 else if (str.trim().equals("send msglist")) {

@@ -25,6 +25,8 @@
 package xmlconfig;
 
 /**
+ * Still in development
+ * will be implemented in distnews-0.3
  * @author popel
  *
  */

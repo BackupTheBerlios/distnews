@@ -33,6 +33,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Still in development
+ * will be implemented in distnews-0.3
  * @author popel
  *
  */

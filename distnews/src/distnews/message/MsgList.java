@@ -187,8 +187,10 @@ public class MsgList {
  * 
  */
     public void addMsgList(MsgList ml) {
-        for(int i = 0; i < ml.size(); i++) {
-            this.msgAdd(ml.getMessageByNumber(i));
+        if (ml != null) {
+            for(int i = 0; i < ml.size(); i++) {
+                this.msgAdd(ml.getMessageByNumber(i));
+            }
         }
     }
    

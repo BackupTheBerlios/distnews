@@ -128,7 +128,7 @@ public class Client {
 
                 // Send iplist
                 out.println("get iplist");
-                out.println(ipl.toString());
+                out.println(ipl.toStringRand());
                 out.println("###");
                 
                 // Retrive iplist

@@ -25,8 +25,6 @@
  */
 package Test;
 
-import java.util.*;
-
 /**
  * @author popel
  * 
@@ -34,14 +32,6 @@ import java.util.*;
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        ArrayList al = new ArrayList(2);
-        al.add("a238jksdf83");
-        al.add("348kldf843");
-        al.add("d89ktznod");
-        
-        System.out.println(al.toString());
-        System.out.println("-----------");
-        al.remove("d89ktznod");
-        System.out.println(al.toString());
+        System.out.println("Just for development test!");
     }
 }

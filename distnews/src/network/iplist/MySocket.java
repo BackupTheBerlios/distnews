@@ -31,12 +31,21 @@ package network.iplist;
 public class MySocket {
     public String ip = "";
     public int port = 7788;
-    
+
+/**
+ * Constructor
+ * @param i	IP address
+ * @param p port
+ */
     public MySocket(String i, int p) {
         ip = i;
         port = 7788;
     }
-    
+
+/**
+ * Constructor
+ * @param s IP:port
+ */    
     public MySocket(String s) {
         String [] a = s.split(":");
         ip = a[0];
@@ -44,15 +53,28 @@ public class MySocket {
         //port = Integer.valueOf(a[1]).intValue();
     }
 
+/**
+ * Constructor that creates the first ip to connect to
+ *
+ */
     public MySocket() {
-        ip = "192.168.77.20";
+        //ip = "distnews.homelinux.org";
+        ip = "distnews.homelinux.org";	
         port = 7788;
     }
-    
+
+/**
+ * compares sockets
+ * @param ms socket to compare with 
+ * @return ?(sockets equal)
+ */
     public boolean equals (MySocket ms) {
         return (ip.equals(ms.ip));
     }
-    
+
+/**
+ * convert socket to string 
+ */
     public String toString() {
         return (ip + ":" + Integer.toString(port));
     }
