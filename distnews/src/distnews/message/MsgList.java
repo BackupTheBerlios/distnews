@@ -75,7 +75,7 @@ public class MsgList {
  * @param	message	MessageString that should be added
  * 
  */
-    public void msgAdd(String message) {
+    private void msgAdd(String message) {
         message = this.msgPrepare(message);
         MessageContainer mc = new MessageContainer(message);
         if (!this.checkExist(mc) && !this.msgFilter(mc) && (message.length() < 12000)) {

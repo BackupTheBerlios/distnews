@@ -107,7 +107,8 @@ public class GUIServerThread extends Thread {
                     while (!(str = in.readLine()).trim().equals("###")) {
                         a = a.concat(str + "\n");
                     }
-                    ml.msgAdd(a);
+                    a = "<?xml version='1.0' encoding='" + System.getProperty("file.encoding") + "'?><messagelist date=\""+ System.currentTimeMillis() + "\"><message count=\"0\" hash=\"X\">" + a + "</message></messagelist>";
+                    ml.addMsgList((new XMLMessageParser(a.trim(),conf)).returnMsgList());
                     out.println("END");
                     out.print("// ");
                 }

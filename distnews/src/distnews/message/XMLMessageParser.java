@@ -24,20 +24,14 @@
  */
 package distnews.message;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import xmlconfig.Configuration;
 
@@ -54,7 +48,20 @@ public class XMLMessageParser {
  * @param	a	message to be parsed
  */
     public XMLMessageParser(String a, Configuration c) {
-        this.xmlsource	= a.replaceAll("\n","");;
+        a = a.replaceAll("\n","");
+        a = a.replaceAll("\t","");
+        a = a.replaceAll("\r","");
+        a = a.replaceAll("\f","");
+        
+        while (a.matches(".*  .*")) {
+            a = a.replaceAll("  "," ");
+        }
+        
+        
+        this.xmlsource = a.replaceFirst(">", ">\n");
+        
+        System.out.println(a);
+        
         this.ml		= new MsgList(0, c);
     }
     
@@ -68,7 +75,9 @@ public class XMLMessageParser {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setValidating(false);
             DocumentBuilder db  = dbf.newDocumentBuilder();
+            System.out.println("123");
             Document doc = db.parse(new InputSource(new StringReader(xmlsource)));
+            
             
             ArrayList al = new ArrayList(3);
             Node node = (Node) doc;
@@ -80,38 +89,24 @@ public class XMLMessageParser {
                 String a = "";
                 if(c.getFirstChild().getNodeType() == 3) {
                     mc.setMessage(c.getFirstChild().getNodeValue());
-            	}
-                else if (c.getFirstChild().getNodeType() == 1){
+            	} else if (c.getFirstChild().getNodeType() == 1){
             	    for (Node n = c.getFirstChild(); n != null; n = n.getNextSibling()) {
             	        a = a + n.toString();
             	    }
             	    mc.setMessage(a);
-            	}
-                else {
+            	} else {
                     System.out.println("XMLMESSAGEPARSER: NodeTypeError");
                 }
                 
-                if (c.getAttributes().getNamedItem("hash").getNodeValue().equals(mc.getHash())) {
+                if (c.getAttributes().getNamedItem("hash").getNodeValue().equals(mc.getHash()) || c.getAttributes().getNamedItem("hash").getNodeValue().equals("X")) {
                     ml.msgAdd(mc);
                 } else System.out.println("message not consistant : new -> " + c.getAttributes().getNamedItem("hash").getNodeValue() + "  -  old -> " + mc.getHash() + " "+ mc.getMessage());
             }
             return ml;
-        } catch (DOMException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (FactoryConfigurationError e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("XMLMESSAGEPARSER: " +e);
         }
+        System.out.println("XMLMESSAGPARSER: lost messages");
         return null;
     }
 }
