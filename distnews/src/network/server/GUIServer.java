@@ -27,6 +27,8 @@ package network.server;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import xmlconfig.Configuration;
+
 import distnews.message.MsgList;
 
 import network.iplist.IpList;
@@ -38,16 +40,18 @@ import network.iplist.IpList;
 public class GUIServer extends Thread {
     IpList ipl;
     MsgList ml;
+    Configuration conf;
     
-    public GUIServer (IpList i, MsgList m) {
+    public GUIServer (IpList i, MsgList m, Configuration c) {
         this.ipl	= i;
-        this.ml	= m;
+        this.ml		= m;
+        this.conf	= c;
     }
     
     public void run(){
         try {
-            ServerSocket ss = new ServerSocket(7799);
-            Monitor monitor = new Monitor(4);
+            ServerSocket ss = new ServerSocket(this.conf.getIntValue("gui_port"));
+            Monitor monitor = new Monitor(this.conf.getIntValue("gui_maxclients"));
             while (true) {
                 Socket sverb = ss.accept();
                 if (monitor.isFree()) {

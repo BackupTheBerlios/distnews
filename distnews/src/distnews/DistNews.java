@@ -32,8 +32,11 @@ package distnews;
  * TODO Funktion um distnews regul?r (mit speichern zu beenden)
  * TODO Funktion um messages aus letztem lauf wieder zu laden
  * 
- * XXX Configurations script
- * XXX xml configuration
+ * XXX Configurations script (done)
+ * XXX xml configuration (done)
+ * 
+ * FIXME do not store internal network ips on internet units
+ * FIXME messages are changed when inserted due to differences in layout (blanks)
  * 
  */ 
 

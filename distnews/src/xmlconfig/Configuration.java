@@ -1,5 +1,5 @@
 /*
- * Copyright 2004 by Kai Ršmer
+ * Copyright 2004 by Kai R?mer
  * mailto: kai.roemer@gmx.de
  * 
  * 
@@ -34,14 +34,41 @@ import java.util.ArrayList;
 public class Configuration {
     ArrayList cfglist;
     
+    /**
+     * Defining standat values
+     *
+     */
+    
     public Configuration () {
         this.cfglist = new ArrayList(7);
+        
+        this.cfglist.add(new Cfg("server_port","7788"));
+        this.cfglist.add(new Cfg("gui_port","7799"));
+        this.cfglist.add(new Cfg("server_maxclients","10"));
+        this.cfglist.add(new Cfg("gui_maxclients","4"));
+        this.cfglist.add(new Cfg("client_sleeptime","5000"));
+        //this.cfglist.add(new Cfg("",""));
+        //this.cfglist.add(new Cfg("",""));
+        //this.cfglist.add(new Cfg("",""));
+        //this.cfglist.add(new Cfg("",""));
+        //this.cfglist.add(new Cfg("",""));
+        //this.cfglist.add(new Cfg("",""));
     }
     
+    /**
+     * Adding new configuration values. If they exist, old values are overwritten.
+     * @param n	name of value
+     * @param v	value
+     */
     public void addValue(String n, String v) {
-        this.cfglist.add(new Cfg(n,v));
+        this.changeValue(n,v);
     }
     
+    /**
+     * Returns value of the named item
+     * @param n item name
+     * @return value of named item
+     */
     public String getValue(String n) {
         for (int i = 0; i < this.cfglist.size(); i++) {
             if (((Cfg) this.cfglist.get(i)).name.equals(n)) return ((Cfg) this.cfglist.get(i)).value;
@@ -49,6 +76,11 @@ public class Configuration {
         return null;
     }
     
+    /**
+     * Findes value and changes it or adds it if not existing 
+     * @param n name of item
+     * @param v value of item
+     */
     public void changeValue(String n, String v) {
         for (int i = 0; i < this.cfglist.size(); i++) {
             if (((Cfg) this.cfglist.get(i)).name.equals(n)) {
@@ -57,5 +89,9 @@ public class Configuration {
             }
         }
         this.cfglist.add(new Cfg(n,v));
+    }
+    
+    public int getIntValue(String n) {
+        return Integer.valueOf(this.getValue(n)).intValue();
     }
 }

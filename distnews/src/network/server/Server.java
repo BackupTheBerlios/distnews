@@ -26,6 +26,8 @@ package network.server;
 
 import java.net.*;
 
+import xmlconfig.Configuration;
+
 import distnews.message.MsgList;
 
 import network.iplist.IpList;
@@ -38,25 +40,27 @@ import network.iplist.MySocket;
 public class Server extends Thread {
     IpList ipl;
     MsgList ml;
+    Configuration conf;
     
-    public Server (IpList i, MsgList m) {
+    public Server (IpList i, MsgList m, Configuration c) {
         this.ipl	= i;
-        this.ml	= m;
+        this.ml		= m;
+        this.conf	= c;
     }
     
     public void run() {
         try {
-            ServerSocket ss = new ServerSocket(7788);
-            Monitor monitor = new Monitor(10);
+            ServerSocket ss = new ServerSocket(conf.getIntValue("server_port"));
+            Monitor monitor = new Monitor(conf.getIntValue("server_maxclients"));
             while (true) {
                 Socket sverb = ss.accept();
                 if (monitor.isFree()) {
-                    //System.out.println("SERVER  connection from : " + sverb.getInetAddress().toString().substring(1));
+                    System.out.println("SERVER \tclient connection from: " + sverb.getInetAddress().toString().substring(1));
                     ipl.addSocket(new MySocket(sverb.getInetAddress().toString().substring(1), 7788));
                     new ServerThread(sverb, monitor, ipl, ml).start();
                 } else {
                     ipl.addSocket(new MySocket(sverb.getInetAddress().toString().substring(1), 7788));
-                    //System.out.println("SERVER connection refused: " + sverb.getInetAddress().toString().substring(1));
+                    System.out.println("SERVER \tclient connection refused from: " + sverb.getInetAddress().toString().substring(1));
                     sverb.close();
                 }
             }

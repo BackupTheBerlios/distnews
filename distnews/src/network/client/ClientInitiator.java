@@ -24,6 +24,7 @@
  */
 package network.client;
 
+import xmlconfig.Configuration;
 import distnews.message.MsgList;
 import network.iplist.IpList;
 
@@ -34,23 +35,27 @@ import network.iplist.IpList;
 public class ClientInitiator extends Thread {
     IpList ipl;
     MsgList ml;
-    public ClientInitiator (IpList i, MsgList m) {
+    Configuration conf;
+    
+    public ClientInitiator (IpList i, MsgList m, Configuration c) {
         this.ipl	= i;
         this.ml		= m;
+        this.conf	= c;
     }
     public void run() {
         while(true) {
-            String ip = ipl.nextSocket().ip;
+            String	ip		= ipl.nextSocket().ip;
+            int 	port	= ipl.nextSocket().port;
             if (!ip.equals("")) {
                 //System.out.println("CLIENT connecting to " + ip);
                 try {
-                    new Client(ipl, ml).run(ip, 7788);            
+                    new Client(ipl, ml).run(ip, port);            
                 } catch(Exception e) {
 	                System.out.println("ClientInitiator: " + e);
 	            }
                 //System.out.println("CLIENT connection finished: " + ip);
 	            try {
-	                sleep(5000);
+	                sleep(this.conf.getIntValue("client_sleeptime"));
 	            }
 	            catch(InterruptedException e) {
 	                System.out.println("ClientInitiatorsleep: " + e);
