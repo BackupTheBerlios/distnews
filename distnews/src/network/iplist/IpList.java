@@ -24,7 +24,9 @@
  */
 package network.iplist;
 
-import java.util.*;
+import java.util.ArrayList;
+
+import xmlconfig.Configuration;
 
 /**
  * @author popel
@@ -34,8 +36,12 @@ public class IpList {
     private ArrayList ipl;
     public int pos = 0;
     private int size = 0;
+    private int maxsockets;
     
-    public IpList(int si) {
+    
+    public IpList(int si, Configuration c) {
+        this.maxsockets = Integer.valueOf(c.getValue("maxsockets")).intValue();
+        
         this.ipl = new ArrayList(si);
         ipl.add(new MySocket());
     }
@@ -63,7 +69,7 @@ public class IpList {
     
     
     private void controllSize() {
-        if(this.ipl.size() > 250) {
+        if(this.ipl.size() > this.maxsockets) {
             for(int i = 1; i < 50; i++) {
                 this.ipl.remove(i);
             }
@@ -81,14 +87,14 @@ public class IpList {
     }
     
 /**
- * Returns 5 randomly selected sockets from the whole list 
+ * Returns 6 randomly selected sockets from the whole list 
  * @return socket list
  */
     public String toStringRand() {
         String a = "";
         for(int i = 0; i < 6 ; i++) {
             int b = 0;
-            while ((b = ((int) (Math.random() * 250))) >= this.ipl.size()) {}
+            while ((b = ((int) (Math.random() * this.maxsockets))) >= this.ipl.size()) {}
             a += "\n" + ((MySocket) ipl.get(b)).toString();
         }
         return a.trim();

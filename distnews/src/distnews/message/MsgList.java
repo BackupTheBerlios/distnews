@@ -30,6 +30,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.io.IOException;
 
+import xmlconfig.Configuration;
+
 
 /**
  * @author popel
@@ -49,7 +51,7 @@ public class MsgList {
  * @param	size	initial size of the new MessageList
  * 
  */
-    public MsgList (int size) {
+    public MsgList (int size, Configuration c) {
         msglist = new ArrayList(size);
         this.hashtable = new HashList();
     }

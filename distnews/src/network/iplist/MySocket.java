@@ -30,7 +30,7 @@ package network.iplist;
  */
 public class MySocket {
     public String ip = "";
-    public int port = 7788;
+    public int port = 0;
 
 /**
  * Constructor
@@ -39,7 +39,7 @@ public class MySocket {
  */
     public MySocket(String i, int p) {
         ip = i;
-        port = 7788;
+        port = p;
     }
 
 /**
@@ -49,8 +49,11 @@ public class MySocket {
     public MySocket(String s) {
         String [] a = s.split(":");
         ip = a[0];
-        port = 7788;
-        //port = Integer.valueOf(a[1]).intValue();
+        if (a[1].trim().equals("")) {
+            port = 7788;
+        } else {
+            port = Integer.valueOf(a[1]).intValue();
+        }
     }
 
 /**

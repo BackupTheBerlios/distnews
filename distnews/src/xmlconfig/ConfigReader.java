@@ -25,7 +25,6 @@
 
 package xmlconfig;
 
-import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -45,11 +44,12 @@ import org.w3c.dom.NodeList;
  */
 
 public class ConfigReader {
-	ArrayList cl = new ArrayList(0);
-	int b = 0;
+    Configuration cfg;
 	
-	public ConfigReader (String filename) throws Exception {
+	public ConfigReader (String filename, Configuration c) throws Exception {
 		
+	    this.cfg = c;
+	    
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db  = dbf.newDocumentBuilder();
 		Document doc = db.parse(filename);
@@ -58,39 +58,20 @@ public class ConfigReader {
 		
 		Node n = (Node) doc;
 		
-		System.out.println("rek\tfor\ttext");
-		
 		this.recursiveTest(n);
 	} 
-	
-	/*public String getValue(String a) {
-		for(int i = 0; i < cl.size(); i++) {
-			if(((Cfg) cl.get(i)).name.trim().equals(a.trim())) {
-				return ((Cfg) cl.get(i)).value.trim();
-			}
-		}
-		return null;
-	}*/
-	
-	/*public String toString() {
-		String a = "";
-		for(int i = 0; i < cl.size(); i++) {
-			a += ((Cfg) cl.get(i)).name.trim() + " --> " +  ((Cfg) cl.get(i)).value.trim() + "\n";
-		}
-		return a;
-	}*/
 	
 	private void recursiveTest(Node n) {
 	    int a = 0;
 
 	    NodeList nl = n.getChildNodes();
 	    for (int i = 0; i < nl.getLength(); i++) {
+	        if(nl.item(i).getNodeName().equals("entry")) {
+	            System.out.println(nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + "\t" + nl.item(i).getAttributes().getNamedItem("value").getNodeValue());
+	            cfg.addValue(nl.item(i).getAttributes().getNamedItem("name").getNodeValue(), nl.item(i).getAttributes().getNamedItem("value").getNodeValue());
+	        }
 	        if(nl.item(i).hasAttributes() || nl.item(i).hasChildNodes()) {
-	            b= i;
-		        System.out.println(b + "\t" + a + "\t>" + nl.item(i).toString().trim().replaceAll("\\n","").replaceAll("\t","") + "<");
-		        
 		        recursiveTest(nl.item(i));
-
 	        }
 	    }
 	}

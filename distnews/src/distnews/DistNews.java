@@ -26,7 +26,6 @@ package distnews;
 
 /*
  * TODO Security verbessern
- * TODO Message Bestandsabgleich vor ?bertragung (partialy done)
  * TODO Serverseitiges Select mittels XSLT
  * TODO Message Format Definition
  * 
@@ -38,6 +37,8 @@ package distnews;
  * 
  */ 
 
+import xmlconfig.ConfigReader;
+import xmlconfig.Configuration;
 import distnews.message.MsgList;
 import network.client.ClientInitiator;
 import network.iplist.IpList;
@@ -55,13 +56,20 @@ public class DistNews {
         System.out.println("(c) 2003, 2004 by Kai Roemer");
         System.out.println("Published under GPL");
         
+        // Define type set
         System.setProperty("file.encoding", "UTF-8");
         
-        IpList ipl	= new IpList(10);
-        MsgList ml	= new MsgList(1);
+        // Read configuration from file
+        Configuration cfg = new Configuration();
+        new ConfigReader("config.xml", cfg);
         
-        new Server(ipl, ml).start();
-        new GUIServer(ipl, ml).start();
-        new ClientInitiator(ipl, ml).start();
+        // Construct system wide tables
+        IpList ipl	= new IpList(10,cfg);
+        MsgList ml	= new MsgList(1,cfg);
+        
+        // Start Server, GUI and then client
+        new Server(ipl, ml, cfg).start();
+        new GUIServer(ipl, ml, cfg).start();
+        new ClientInitiator(ipl, ml, cfg).start();
     }
 }

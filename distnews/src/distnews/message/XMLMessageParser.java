@@ -53,7 +53,7 @@ public class XMLMessageParser {
  */
     public XMLMessageParser(String a) {
         xmlsource = a.replaceAll("\n","");;
-        ml = new MsgList(0);
+        ml = new MsgList(0, null);
     }
     
 /**

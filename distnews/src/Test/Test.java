@@ -25,6 +25,9 @@
  */
 package Test;
 
+import xmlconfig.ConfigReader;
+import xmlconfig.Configuration;
+
 /**
  * @author popel
  * 
@@ -33,5 +36,7 @@ public class Test {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Just for development test!");
+        Configuration cfg = new Configuration();
+        ConfigReader cr = new ConfigReader("config.xml", cfg);
     }
 }
